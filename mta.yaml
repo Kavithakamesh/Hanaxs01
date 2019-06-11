@@ -1,0 +1,38 @@
+ID: Train01HANADB
+_schema-version: '2.1'
+description: Train01 HANADB
+version: 0.0.1
+
+modules:
+ - name: dbtrain1
+   type: hdb
+   path: dbtrain1
+   requires:
+    - name: hdi_dbtrain1
+      properties:
+        TARGET_CONTAINER: ~{hdi-container-name}
+
+
+
+    - name: cross-container-service-1
+      group: SERVICE_REPLACEMENTS
+
+      properties:
+        key: ServiceName_1
+        service: ~{the-service-name}
+                          
+
+
+resources:
+ - name: hdi_dbtrain1
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container
+
+ - name: cross-container-service-1
+   parameters:
+      service-name: SFLIGHT
+   properties:
+      the-service-name: ${service-name}
+   type: org.cloudfoundry.existing-service
+
